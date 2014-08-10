@@ -63,11 +63,11 @@ using GNU Make.
 Windows
 -------
 
-On Windows Panopticon can be built using either Microsoft Visual 
+On Windows Panopticon can be built using either Microsoft Visual
 Studio 2013 Update 2 (64 bit) or Mingw 4.8.2 (32 bit). You need
 at least Windows 7.
 
-Visual Studio 2013 
+Visual Studio 2013
 ~~~~~~~~~~~~~~~~~~
 
 Download and install `CMake <http://www.cmake.org/cmake/resources/software.html>`_.
@@ -91,7 +91,7 @@ Clone the `Panopticon repository <git://github.com/das-labor/panopticon.git>`_. 
 
 .. image:: /userdoc/cmake.png
 
-Click "Generate", select "Visual Studio 12 2013 Win64" and click "Finish". After build configuration was successful open the panopticon.sln file inside the build folder with Visual Studio and build the solution (F7). 
+Click "Generate", select "Visual Studio 12 2013 Win64" and click "Finish". After build configuration was successful open the panopticon.sln file inside the build folder with Visual Studio and build the solution (F7).
 
 Mingw
 ~~~~~

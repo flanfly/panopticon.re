@@ -58,19 +58,3 @@ body {
 	padding-left: 20px;
 	padding-bottom: 60px;
 }
-
-/* issue.hamlet */
-.comment h2 {
-  font-size: 18px;
-}
-
-.date {
-  font-weight: normal;
-  color: gray;
-  font-style: italic;
-  font-size: 12px;
-}
-
-.action {
-  font-size: 14px;
-}

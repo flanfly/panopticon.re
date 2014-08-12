@@ -1,3 +1,8 @@
+---
+layout: default
+title: Panopticon Intermediade Language
+---
+
 Intermediate Language
 =====================
 

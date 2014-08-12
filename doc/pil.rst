@@ -13,9 +13,9 @@ Intro
 
 Conventional disassembler translate machine code from its binary representaion to into a list of mnemonics similar to the format assemblers accept. The only knowlegde the disassembler has of the opcode is its textual form (for example "mov") and the number and type (constant vs. register) of operands. These informations are purly "syntactic" – they are only about opcode shape. Advanced disassembler like distorm or IDA Pro add limited semantic information to an opcode like whenever it's a jump or how executing it effects the stack pointer. This ultimatly limits the scope and acurcy of analysis a disassembler can do.
 
- Reverse engineering is about understanding code. Most of the time the analyst interprets assembler instructions by "executing" them in his or her head. Good reverse engeineers are those who can do this faster and more aquratly than others. In order to help human analysts in this labourus task the disassembler needs to understand the semantics of each mnemonic.
+Reverse engineering is about understanding code. Most of the time the analyst interprets assembler instructions by "executing" them in his or her head. Good reverse engeineers are those who can do this faster and more aquratly than others. In order to help human analysts in this labourus task the disassembler needs to understand the semantics of each mnemonic.
 
- Panopticon uses a simple and well defined programming language (called PIL) to model the semantics of mnemonics in a machine readable manner. This intermediate languages is emitted by the disassembler part of Panopticon and used by all analysis algorithms. This way the analysis implementation is decoupled from the details of the instruction set.
+Panopticon uses a simple and well defined programming language (called PIL) to model the semantics of mnemonics in a machine readable manner. This intermediate languages is emitted by the disassembler part of Panopticon and used by all analysis algorithms. This way the analysis implementation is decoupled from the details of the instruction set.
 
 Basic PIL structure
 ===================

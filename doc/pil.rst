@@ -9,20 +9,20 @@ Intermediate Language
 Panopticon uses a intermediate language to model mnemonic semantics.
 
 Intro
------
+=====
 
-Conventional disassembler translate machine code from its binary representaion to into a list of mnemonics similar to the format assemblers accept. The only knowlegde the disassembler has of the opcode is its textual form (for example "mov") and the number and type (constant vs. register) of operands. These informations are purly "syntactic" -- they are only about opcode shape. Advanced disassembler like distorm or IDA Pro add limited semantic information to an opcode like whenever it's a jump or how executing it effects the stack pointer. This ultimatly limits the scope and acurcy of analysis a disassembler can do.
+Conventional disassembler translate machine code from its binary representaion to into a list of mnemonics similar to the format assemblers accept. The only knowlegde the disassembler has of the opcode is its textual form (for example "mov") and the number and type (constant vs. register) of operands. These informations are purly "syntactic" – they are only about opcode shape. Advanced disassembler like distorm or IDA Pro add limited semantic information to an opcode like whenever it's a jump or how executing it effects the stack pointer. This ultimatly limits the scope and acurcy of analysis a disassembler can do.
 
  Reverse engineering is about understanding code. Most of the time the analyst interprets assembler instructions by "executing" them in his or her head. Good reverse engeineers are those who can do this faster and more aquratly than others. In order to help human analysts in this labourus task the disassembler needs to understand the semantics of each mnemonic.
 
  Panopticon uses a simple and well defined programming language (called PIL) to model the semantics of mnemonics in a machine readable manner. This intermediate languages is emitted by the disassembler part of Panopticon and used by all analysis algorithms. This way the analysis implementation is decoupled from the details of the instruction set.
 
 Basic PIL structure
--------------------
+===================
 
 A PIL program modeling the AVR "adc" instruction looks as this:
 
-.. code-block::
+.. code-block:: C++
 
   ...
 
@@ -40,7 +40,7 @@ Booleans support first order logic and conversion to integers:
 
 Memory in PIL programs is modeled as an array of memory cells. These arrays are called memory banks and have unique names used for identification. The cells are numbered in acending order starting at 0. This nmber is the offset of the cell. If mutiple cells are accessed at once, cells can either be interpreted in Little Endian (torwards lower offsets) or Big Endian (torwards higher offsets). In conclusion, a read- and writable memory reference consist of the memory bank name, the offset of the first cell to be read/written, the number of cells to work on and whenever Big or Little Endian byte ordering should be honored.
 
-.. code-block::
+.. code-block:: C++
 
   f = a[0x1,1,little-endian]
   b[a,3,big-endian] = 0x1
@@ -48,18 +48,18 @@ Memory in PIL programs is modeled as an array of memory cells. These arrays are 
 Aside from boolean and integer constants, variables and memory references PIL programs can use undefined values. Setting a variable or memory cell to "undefined" tells the analysis engine that the operation either has no result or that this value can not be by determined by the disassembler. A example for the first case is the "call" instruction in x86. PIL structure mandates that call produces a value that is assigned to a varaible. No such value exists in Intel architectures, so "call" returns "undefined".
 
 Control Flow in PIL
--------------------
+===================
 
 The PIL programs produced by the disassemblers are seqences of instructions. No jump or optional instructions are allowd inside a mnemonic. After each mnemonic an unlimited number of jumps is allowed. Each jump is associated with a guard which is a boolean PIL expression. If the guard is true, the jump is taken. A convetional "jmp" mnemonic in x86 can be modeled like this
 
-.. code-block::
+.. code-block:: C++
 
   ...
 
 Nevertheless PIL has a "call" instruction. This instruction has a single argument that specifis the address where a new function begins. No "return" instruction exists in PIL. Functions terminate after a sequence with no outgoing jumps is reached.
 
 Generating PIL Code
--------------------
+===================
 
 The textual representaion of PIL used previous examples can'b be used directly in the disassembler. The code is expected to generate the PIL structures itself. PIL is defined in the "value.hh" and "instr.hh" header files . These are part of the Panopticon library. A PIL instruction is an instance of the "instr" class. Its contructor needs the operation to use, its arguments and the variable or memory reference that receives the result of the operation:
 

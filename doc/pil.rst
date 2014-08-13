@@ -22,9 +22,9 @@ Basic PIL structure
 
 A PIL program modeling the AVR "adc" instruction looks as this:
 
-.. code-block:: C++
+.. math::
 
-  ...
+  a \rightarrow b
 
 Each PIL program is a seqence of assignemnts. The left side is either a variable or a memory reference. The right side is a single operation with one or more arguments. PIL has two types of values, integers and booleans. PIL is strongly typed, operations that work on integers will not accept boolean values and vise versa. Conversion between those two types must be done explicitly. Integers allow simple linear arithmetic and comparison:
 
@@ -40,7 +40,7 @@ Booleans support first order logic and conversion to integers:
 
 Memory in PIL programs is modeled as an array of memory cells. These arrays are called memory banks and have unique names used for identification. The cells are numbered in acending order starting at 0. This nmber is the offset of the cell. If mutiple cells are accessed at once, cells can either be interpreted in Little Endian (torwards lower offsets) or Big Endian (torwards higher offsets). In conclusion, a read- and writable memory reference consist of the memory bank name, the offset of the first cell to be read/written, the number of cells to work on and whenever Big or Little Endian byte ordering should be honored.
 
-.. code-block:: C++
+.. code-block:: c++
 
   f = a[0x1,1,little-endian]
   b[a,3,big-endian] = 0x1
@@ -52,7 +52,7 @@ Control Flow in PIL
 
 The PIL programs produced by the disassemblers are seqences of instructions. No jump or optional instructions are allowd inside a mnemonic. After each mnemonic an unlimited number of jumps is allowed. Each jump is associated with a guard which is a boolean PIL expression. If the guard is true, the jump is taken. A convetional "jmp" mnemonic in x86 can be modeled like this
 
-.. code-block:: C++
+.. code-block:: c++
 
   ...
 
@@ -63,7 +63,7 @@ Generating PIL Code
 
 The textual representaion of PIL used previous examples can'b be used directly in the disassembler. The code is expected to generate the PIL structures itself. PIL is defined in the "value.hh" and "instr.hh" header files . These are part of the Panopticon library. A PIL instruction is an instance of the "instr" class. Its contructor needs the operation to use, its arguments and the variable or memory reference that receives the result of the operation:
 
-.. code-block:: C++
+.. code-block:: c++
 
   instr i(logic_xor{true,false},variable("a"));
   instr j(int_add{variable("b"),contant(55)},variable("c"));
@@ -77,7 +77,7 @@ The PIL operations are named <domain>_<operation> where <domain> is either "int"
 
 To make "instr" instance construction easier, the disassembler framework defines a "code_generator" class and give an instance of it to the semantic function of an opcode. The "code_generator" structure has methods for starting new mnemonics and appending PIL instructions to them.
 
-.. code-block:: C++
+.. code-block:: c++
 
   ---test a, b => a = a*55 + b
   st.mnemonic("test",2,{variable("a"),variable("b")},[&](void)
@@ -90,7 +90,7 @@ The code above add the 3 byte large mnemonic "test" to the current basic block. 
 
 To make complex PIL expression more readable Panopticon includes overloads of most of the arithmetic and logic operators that behave like the code generator methods Thses overloads reside in the "po::dsel" namespace and are "activated" by including this namespace.
 
-.. code-block:: C++
+.. code-block:: c++
 
   using namespace po::dsel;
 

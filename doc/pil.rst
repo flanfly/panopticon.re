@@ -23,7 +23,6 @@ Basic PIL structure
 A PIL program modeling the AVR "adc" instruction looks as this:
 
 .. math::
-
   a \rightarrow b
 
 Each PIL program is a seqence of assignemnts. The left side is either a variable or a memory reference. The right side is a single operation with one or more arguments. PIL has two types of values, integers and booleans. PIL is strongly typed, operations that work on integers will not accept boolean values and vise versa. Conversion between those two types must be done explicitly. Integers allow simple linear arithmetic and comparison:

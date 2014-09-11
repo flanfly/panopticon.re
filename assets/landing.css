@@ -1,0 +1,54 @@
+.landing {
+	padding-top: 150px;
+	padding-bottom: 150px;
+	font-weight: 300;
+}
+
+#landing-logo {
+	fill: #1a1a1a;
+	vertical-align: middle;
+	margin-top: -.2em;
+}
+
+#landing1 {
+	background: url(/assets/grey_@2X.png) 0 0 scroll, radial-gradient(#7e8c99,#334557) 0 0 scroll #7e8c99;
+}
+
+#landing1 h1 {
+	letter-spacing: 10px;
+	font-size: 72pt;
+	padding-top: 30px;
+	font-weight: 400;
+	color: #1a1a1a;
+}
+
+#landing1 p {
+	letter-spacing: 2px;
+	font-size: 15pt;
+	margin-top: -30pt;
+	color: #1a1a1a;
+}
+
+#landing1 button {
+	margin-top: 40pt;
+}
+
+#landing2 {
+	font-size: 145%;
+	line-height: 160%;
+	background: #1a1a1a;
+	color: #eee;
+}
+
+#landing3 {
+	background: #eee;
+}
+
+#landing3 p {
+	font-size: 115%;
+}
+
+#landing3 h2 {
+	padding-top: 20pt;
+	font-weight: 400;
+}

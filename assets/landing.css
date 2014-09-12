@@ -33,22 +33,29 @@
 	margin-top: 40pt;
 }
 
-#landing2 {
+#landing2, #landing6 {
 	font-size: 145%;
 	line-height: 160%;
 	background: #1a1a1a;
 	color: #eee;
 }
 
-#landing3 {
+#landing3, #landing4, #landing5 {
 	background: #eee;
 }
+#landing4 img, #landing5 img {
+	background: white;
+	padding: 1em;
+	border-radius: 20px;
+}
 
-#landing3 p {
+#landing3 p, #landing4 p, #landing5 p {
 	font-size: 115%;
 }
 
-#landing3 h2 {
+#landing3 h2, #landing4 h2, #landing5 h2 {
 	padding-top: 20pt;
 	font-weight: 400;
 }
+
+

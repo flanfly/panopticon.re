@@ -8,6 +8,7 @@
     'use strict';
 
     /**
+     * *Important note: Do NOT use this as a dropdown! Use Ink.UI.Dropdown for that.*
      *
      * You need two elements to use Toggle: the `trigger` element, and the `target` element (or elements). The default behaviour is to toggle the `target`(s) when you click the `trigger`.
      *
@@ -16,20 +17,22 @@
      * When you initialize the Toggle, it will check if the targets are visible to figure out what the initial state is. You can force the toggle to consider itself turned "on" or "off" by setting the `initialState` option to `true` or `false`, respectively.
      *
      * You can get the current state of the Toggle by calling `getState`, or by checking if your `trigger` element has the "active" class.
-     * The state can be changed through JavaScript. Just call  `setState(true)` 
+     * The state can be changed through JavaScript. Just call  `setState(true)`
      * to turn the Toggle on (or `setState(false)` to turn it off).
      *
      * @class Ink.UI.Toggle
      * @constructor
      * @version 1
-     * @param {String|DOMElement} selector  Trigger element. By clicking this, the target (or targets) are triggered.
+     * @param {String|Element} selector  Trigger element. By clicking this, the target (or targets) are triggered.
      * @param {Object} [options] Options object, containing:
      *
      * @param {String}              options.target                  CSS Selector that specifies the elements that this component will toggle
+     * @param {Boolean}             [options.isAccordion]           Set this to true to signal that this toggle is part of an accordion with other toggles. The toggles of an accordion must be common descendants of an element with the class "accordion". If they're not, Ink will warn you about this on the console.
      * @param {String}              [options.classNameOn]           CSS class to toggle when on. Defaults to 'show-all'.
      * @param {String}              [options.classNameOff]          CSS class to toggle when off. Defaults to 'hide-all'.
      * @param {String}              [options.triggerEvent]          Event that will trigger the toggling. Defaults to 'click'.
      * @param {Boolean}             [options.closeOnClick]          Flag to toggle the targe off when clicking outside the toggled content. Defaults to true.
+     * @param {Boolean}             [options.canToggleAnAncestor]   Set to true if you want the toggle to target ancestors of itself. Defaults to false.
      * @param {String}              [options.closeOnInsideClick]    Toggle off when a child element matching this selector is clicked. Set to null to deactivate the check. Defaults to 'a[href]'.
      * @param {Boolean}             [options.initialState]          Flag to define initial state. false: off, true: on, null: markup. Defaults to null.
      * @param {Function}            [options.onChangeState]         Callback when the toggle state changes. Return `false` to cancel the event.
@@ -46,6 +49,7 @@
         target:         ['Elements'],
         triggerEvent:   ['String', 'click'],
         closeOnClick:   ['Boolean', true],
+        canToggleAnAncestor: ['Boolean', false],
         isAccordion:    ['Boolean', false],
         initialState:   ['Boolean', null],  // May be true, false, or null to be what it is right now
         classNameOn:    ['String', 'show-all'],
@@ -58,7 +62,7 @@
 
         /**
          * Init function called by the constructor
-         * 
+         *
          * @method _init
          * @private
          */
@@ -68,12 +72,10 @@
             this._targets = Common.elsOrSelector(this._options.target);
 
             // Boolean option handling
-            this._options.closeOnClick = this._options.closeOnClick.toString() === 'true';
+            this._options.closeOnClick = this._options.closeOnClick;
             // Actually a throolean
-            if (this._options.initialState !== null){
-                this._options.initialState = this._options.initialState.toString() === 'true';
-            } else {
-                this._options.initialState = Css.getStyle(this._targets[0], 'display') !== 'none';
+            if (this._options.initialState === null) {
+                this._options.initialState = Css.hasClassName(this._targets[0], this._options.classNameOn);
             }
 
             if (this._options.classNameOn !== 'show-all' || this._options.classNameOff !== 'hide-all') {
@@ -83,9 +85,15 @@
                 }
             }
 
-            this._accordion = ( Css.hasClassName(this._element.parentNode,'accordion') || Css.hasClassName(this._targets[0].parentNode,'accordion') );
+            if (this._options.isAccordion) {
+                this._accordionContainer = InkElement.findUpwardsByClass(
+                    this._element, 'accordion');
+                if (!this._accordionContainer) {
+                    Ink.warn('Ink.UI.Toggle_1: This toggle has the isToggle option set to `true`, but is not a descendant of an element with the class "accordion"! Because of this, it won\'t be able to find other toggles in the same accordion and cooperate with them.');
+                }
+            }
 
-            this._firstTime = true;
+            this._constructing = true;
 
             this._bindEvents();
 
@@ -104,6 +112,8 @@
             }
 
             this._element.setAttribute('data-is-toggle-trigger', 'true');
+
+            this._constructing = false;
         },
 
         /**
@@ -112,7 +122,7 @@
          */
         _bindEvents: function () {
             if ( this._options.triggerEvent ) {
-                InkEvent.observe(
+                InkEvent.on(
                     this._element,
                     this._options.triggerEvent,
                     Ink.bind(this._onTriggerEvent, this));
@@ -120,7 +130,7 @@
             if( this._options.closeOnClick ){
                 InkEvent.observe( document, 'click', Ink.bind(this._onOutsideClick, this));
             }
-            if( this._options.closeOnInsideClick && this._options.closeOnInsideClick !== 'false') {
+            if( this._options.closeOnInsideClick ) {
                 var sel = this._options.closeOnInsideClick;
                 if (sel.toString() === 'true') {
                     sel = '*';
@@ -137,7 +147,7 @@
          * Event handler. It's responsible for handling the `triggerEvent` as defined in the options.
          *
          * This will trigger the toggle.
-         * 
+         *
          * @method _onTriggerEvent
          * @param {Event} event
          * @private
@@ -150,12 +160,8 @@
                 return thisOne === target || InkElement.isAncestorOf(thisOne, target);
             });
 
-            if (isAncestorOfClickedElement) {
+            if (!this._options.canToggleAnAncestor && isAncestorOfClickedElement) {
                 return;
-            }
-
-            if (this._accordion) {
-                this._updateAccordion();
             }
 
             var has = this.getState();
@@ -173,35 +179,36 @@
          * @method _updateAccordion
          **/
         _updateAccordion: function () {
-            var elms, accordionElement;
-            if( Css.hasClassName(this._targets[0].parentNode,'accordion') ){
-                accordionElement = this._targets[0].parentNode;
-            } else {
-                accordionElement = this._targets[0].parentNode.parentNode;
-            }
-            elms = Selector.select('.toggle, .ink-toggle',accordionElement);
-            for(var i=0; i<elms.length; i+=1 ){
-                var dataset = InkElement.data( elms[i] ),
-                    targetElm = Selector.select( dataset.target,accordionElement );
+            if (!this._accordionContainer) { return; }
+            if (this.getState() === false) { return; }
 
-                if( (targetElm.length > 0) && (targetElm[0] !== this._targets[0]) ){
-                    targetElm[0].style.display = 'none';
+            var elms = Selector.select('[data-is-toggle-trigger]', this._accordionContainer);
+            for (var i = 0; i < elms.length; i++) {
+                var otherToggle = Toggle.getInstance(elms[i]);
+                if (otherToggle && (otherToggle !== this) && otherToggle.getState() === true) {
+                    otherToggle.setState(false, true);
                 }
             }
         },
 
         /**
          * Click handler. Will handle clicks outside the toggle component.
-         * 
+         *
          * @method _onOutsideClick
          * @param {Event} event
          * @private
          */
         _onOutsideClick: function( event ){
-            var tgtEl = InkEvent.element(event),
-                shades;
+            var tgtEl = InkEvent.element(event);
+            var shades;
 
-            if (InkElement.findUpwardsBySelector(tgtEl, '[data-is-toggle-trigger="true"]')) return;
+            if (!InkElement.isAncestorOf(document.documentElement, tgtEl)) {
+                // Because if the element was removed while the click event was
+                // bubbling, we can't tell where it came from
+                return;
+            }
+
+            if (InkElement.findUpwardsBySelector(tgtEl, '[data-is-toggle-trigger="true"]')) { return; }
 
             var ancestorOfTargets = InkArray.some(this._targets, function (target) {
                 return InkElement.isAncestorOf(target, tgtEl) || target === tgtEl;
@@ -226,19 +233,35 @@
          * Sets the state of the toggle. (on/off)
          *
          * @method setState
-         * @param newState {Boolean} New state (on/off)
+         * @param {Boolean} on New state (on/off)
+         * @param {Boolean} callHandler Whether to call the onChangeState handler.
+         * @return {void}
          */
         setState: function (on, callHandler) {
-            if (on === this.getState()) { return; }
+            if (on === this.getState() && !this._constructing) { return; }
+
+            var i, len;
+            if (this._group && on) {
+                for (i = 0, len = this._group.length; i < len; i++) {
+                    if (this._group[i].getState() === true) {
+                        this._group[i].setState(false, true);
+                    }
+                }
+            }
+
             if (callHandler && typeof this._options.onChangeState === 'function') {
                 var ret = this._options.onChangeState(on);
                 if (ret === false) { return false; } //  Canceled by the event handler
             }
-            for (var i = 0, len = this._targets.length; i < len; i++) {
+            for (i = 0, len = this._targets.length; i < len; i++) {
                 Css.addRemoveClassName(this._targets[i], this._options.classNameOn, on);
                 Css.addRemoveClassName(this._targets[i], this._options.classNameOff, !on);
             }
             Css.addRemoveClassName(this._element, 'active', on);
+
+            if (this._accordionContainer) {
+                this._updateAccordion();
+            }
         },
 
         /**

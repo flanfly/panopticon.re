@@ -1,0 +1,84 @@
+---
+title: Panopticon 0.9 Released!
+author: seu
+---
+
+After 7 months of development version 0.9 -- code name "Stammheim" -- is ready. The whole code base underwent throughout change and the front end has been rewritten from scratch using Qt5. The new Panopticon looks better, is faster and more correct. Since August 2014 we added more than 100 unit tests that exposed various bugs in the library.
+
+We got rid of the Graphviz and librdf dependencies. The control flow graphs are drawn using a native C++ implementation of the algorithm used in "dot" and RDF is handled by the marshalling layer without external libraries. This improves portability to non-Unix platforms. Speaking of marshalling: all data structures can be serialized to RDF graphs and de-serialized back. Making Panopticon easy to use has always been one of our top priorities that's why we will now provide packages for Ubuntu 14.04, 14.10, Fedora 20, 21 and Arch Linux. Big thanks to SuSE and its Open Build Service for providing us with the build infrastructure!
+
+Last but not least we improved the documentation. The version 0.9 ships with a man page for ``qtpanopticon`` and HTML documents about the internal workings of marshalling, the disassembler framework, data handling and Panopticon's intermediate language PIL.
+
+Installation
+------------
+
+Thanks to the RPM and DEB packages installing Panopticon is easy.
+
+For **Ubuntu 14.04 or 14.10** add the following line to your ``/etc/apt/sources.list``:
+
+.. code:: sh
+
+   # Ubuntu 14.04
+   deb http://download.opensuse.org/repositories/home:/seu:/panopticon/xUbuntu_14.04  ./
+
+   # Ubuntu 14.10
+   deb http://download.opensuse.org/repositories/home:/seu:/panopticon/xUbuntu_14.10  ./
+
+Then, add the repository key, update the APT cache and install the ``qtpanopticon`` package:
+
+.. code:: sh
+
+   # Ubuntu 14.04
+   wget http://download.opensuse.org/repositories/home:/seu:/panopticon/xUbuntu_14.04/Release.key
+   # Ubuntu 14.10
+   wget http://download.opensuse.org/repositories/home:/seu:/panopticon/xUbuntu_14.10/Release.key
+
+   sudo apt-key add Release.key
+   sudo apt-get update
+   sudo apt-get install qtpanopticon
+
+For **Fedora 20 or 21** download the ``.repo`` file off OBS, accept the signing key and install the ``panopticon`` package.
+
+.. code:: sh
+
+   cd /etc/yum.repos.d/
+
+   # Fedora 20
+   sudo wget http://download.opensuse.org/repositories/home:seu:panopticon/Fedora_20/home:seu:panopticon.repo
+
+   # Fedora 21
+   sudo wget http://download.opensuse.org/repositories/home:seu:panopticon/Fedora_21/home:seu:panopticon.repo
+
+   sudo yum install panopticon
+
+For **Arch Linux** you can download the ``panopticon.tar.gz`` tarball off AUR and unpack it. Then build a package using ``makepkg`` and install it.
+
+.. code:: sh
+
+   wget https://aur.archlinux.org/packages/pa/panopticon/panopticon.tar.gz
+   tar xvf panopticon.tar.gz
+   cd panopticon
+   makepkg
+   sudo pacman -U panopticon-*.pkg.tar.xz
+
+If you use another GNU/Linux distribution or Windows you will need to build Panopticon yourself. See our documentation for details.
+
+Changelog
+---------
+
+- Remove Graphviz, Redland (librdf) and CVC4 dependencies.
+- Add Kyotocabinet dependency.
+- Add README and LICENSE files.
+- **Breaking change:** Port UI to Qt5 Quick.
+- Add hexdump view.
+- **Breaking change:** Implement new data model (``region``, ``layer`` and ``slab``).
+- **Breaking change:** Remove command line tool *panop*.
+- **Breaking change:** Native implementation of RDF graph handling.
+- **Breaking change:** Drop POSIX in favor of Boost.Filesystem and ``std::fstream``.
+- Various bugfixes and new unit tests.
+- **Breaking change:** Rewrite of the marshalling subsystem.
+- Remove unused Doxygen documentation.
+- **Breaking change:** Remove SSCP in favor of k-set domain.
+- Native implementation of "dot" algorithm.
+- Add API overview and man page.
+- Packages for Ubuntu, Fedora and Arch Linux.

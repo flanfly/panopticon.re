@@ -19,15 +19,13 @@ Ink.createModule('Ink.UI.Carousel', '1',
     }
 
     var requestAnimationFrame = window.requestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        function (cb) {return setTimeout(cb, 1000 / 30); };
+        function (cb) { return setTimeout(cb, 1000 / 30); };
 
     /**
      * @class Ink.UI.Carousel_1
      * @constructor
      *
-     * @param {String|DOMElement}   selector                    DOM element or element id
+     * @param {String|Element}      selector                    DOM element or element id
      * @param {Object}              [options]                   Carousel Options
      * @param {Integer}             [options.autoAdvance]       Milliseconds to wait before auto-advancing pages. Set to 0 to disable auto-advance. Defaults to 0.
      * @param {String}              [options.axis]              Axis of the carousel. Set to 'y' for a vertical carousel. Defaults to 'x'.
@@ -50,9 +48,6 @@ Ink.createModule('Ink.UI.Carousel', '1',
         axis:           ['String', 'x'],
         initialPage:    ['Integer', 0],
         spaceAfterLastSlide: ['Boolean', true],
-        hideLast:       ['Boolean', false],
-        // [3.1.0] Deprecate "center". It is only needed when things are of unknown widths.
-        center:         ['Boolean', false],
         keyboardSupport:['Boolean', false],
         pagination:     ['String', null],
         onChange:       ['Function', null],
@@ -74,6 +69,7 @@ Ink.createModule('Ink.UI.Carousel', '1',
             this._isY = (this._options.axis === 'y');
 
             var ulEl = Ink.s('ul.stage', this._element);
+            ulEl.style.width = '100%';
             this._ulEl = ulEl;
 
             InkElement.removeTextNodeChildren(ulEl);
@@ -97,7 +93,6 @@ Ink.createModule('Ink.UI.Carousel', '1',
 
             this._setUpPagination();
             this._setUpAutoAdvance();
-            this._setUpHider();
 
             this._options.onInit.call(this, this);
         },
@@ -107,6 +102,7 @@ Ink.createModule('Ink.UI.Carousel', '1',
          * Measure the carousel once again, adjusting the involved elements' sizes. This is called automatically when the window resizes, in order to cater for changes from responsive media queries, for instance.
          *
          * @method refit
+         * @return {void}
          * @public
          */
         refit: function() {
@@ -136,14 +132,12 @@ Ink.createModule('Ink.UI.Carousel', '1',
             this._numPages = numPages;
             this._deltaLength = this._slidesPerPage * this._elLength;
             
-            this._center();
-            this._updateHider();
             this._IE7();
 
             if (this._pagination && numPagesChanged) {
                 this._pagination.setSize(this._numPages);
             }
-            this.setPage(limitRange(this.getPage(), 0, this._numPages));
+            this.setPage(limitRange(this.getPage(), 0, this._numPages - 1));
         },
 
         _setUpPagination: function () {
@@ -158,7 +152,7 @@ Ink.createModule('Ink.UI.Carousel', '1',
                 } else {
                     // assumes instantiated pagination
                     this._pagination = this._options.pagination;
-                    this._pagination._options.onChange = this._handlers.paginationChange;
+                    this._pagination.setOnChange(this._handlers.paginationChange);
                     this._pagination.setSize(this._numPages);
                 }
                 this._pagination.setCurrent(this._options.initialPage || 0);
@@ -177,49 +171,6 @@ Ink.createModule('Ink.UI.Carousel', '1',
             }, this._options.autoAdvance);
         },
 
-        _setUpHider: function () {
-            if (this._options.hideLast) {
-                var hiderEl = InkElement.create('div', {
-                    className: 'hider',
-                    insertBottom: this._element
-                });
-                hiderEl.style.position = 'absolute';
-                hiderEl.style[ this._isY ? 'left' : 'top' ] = '0';  // fix to top..
-                hiderEl.style[ this._isY ? 'right' : 'bottom' ] = '0';  // and bottom...
-                hiderEl.style[ this._isY ? 'bottom' : 'right' ] = '0';  // and move to the end.
-                this._hiderEl = hiderEl;
-            }
-        },
-
-        // [3.1.0] Deprecate this already
-        _center: function() {
-            if (!this._options.center) { return; }
-            var gap = Math.floor( (this._ctnLength - (this._elLength * this._slidesPerPage) ) / 2 );
-
-            var pad;
-            if (this._isY) {
-                pad = [gap, 'px 0'];
-            } else {
-                pad = ['0 ', gap, 'px'];
-            }
-
-            this._ulEl.style.padding = pad.join('');
-        },
-
-        // [3.1.0] Deprecate this already
-        _updateHider: function() {
-            if (!this._hiderEl) { return; }
-            if (this.getPage() === 0) {
-                var gap = Math.floor( this._ctnLength - (this._elLength * this._slidesPerPage) );
-                if (this._options.center) {
-                    gap /= 2;
-                }
-                this._hiderEl.style[ this._isY ? 'height' : 'width' ] = gap + 'px';
-            } else {
-                this._hiderEl.style[ this._isY ? 'height' : 'width' ] = '0px';
-            }
-        },
-        
         /**
          * Refits elements for IE7 because it doesn't support inline-block.
          *
@@ -264,14 +215,17 @@ Ink.createModule('Ink.UI.Carousel', '1',
             var pointerX = InkEvent.pointerX(event);
             var pointerY = InkEvent.pointerY(event);
 
-            var deltaY = Math.abs(pointerY - this._swipeData.y);
-            var deltaX = Math.abs(pointerX - this._swipeData.x);
+            var deltaY = this._swipeData.y - pointerY;
+            var deltaX = this._swipeData.x - pointerX;
 
             if (this._touchMoveIsFirstTouchMove) {
+                var aDeltaY = Math.abs(deltaY);
+                var aDeltaX = Math.abs(deltaX);
+
                 this._touchMoveIsFirstTouchMove = undefined;
                 this._scrolling = this._isY ?
-                    deltaX > deltaY :
-                    deltaY > deltaX ;
+                    aDeltaX > aDeltaY :
+                    aDeltaY > aDeltaX ;
 
                 if (!this._scrolling) {
                     this._onAnimationFrame();
@@ -281,6 +235,7 @@ Ink.createModule('Ink.UI.Carousel', '1',
             if (!this._scrolling && this._swipeData) {
                 InkEvent.stopDefault(event);
 
+                this._swipeData.pointerDelta = this._isY ? deltaY : deltaX;
                 this._swipeData.pointerPos = this._isY ? pointerY : pointerX;
             }
         },
@@ -309,18 +264,19 @@ Ink.createModule('Ink.UI.Carousel', '1',
             if (this._swipeData && this._swipeData.pointerPos && !this._scrolling && !this._touchMoveIsFirstTouchMove) {
                 var snapToNext = 0.1;  // swipe 10% of the way to change page
 
-                var relProgress = this._swipeData.firstUlPos -
-                    this._ulEl.getBoundingClientRect()[this._isY ? 'top' : 'left'];
+                var pointerDelta = this._swipeData.pointerDelta;
 
                 var curPage = this.getPage();
 
                 // How many pages were advanced? May be fractional.
-                var progressInPages = relProgress / this._elLength / this._slidesPerPage;
+                var progressInPages = pointerDelta / this._elLength / this._slidesPerPage;
 
                 // Have we advanced enough to change page?
                 if (Math.abs(progressInPages) > snapToNext) {
-                    curPage += Math[ relProgress < 0 ? 'floor' : 'ceil' ](progressInPages);
+                    curPage += Math[ pointerDelta < 0 ? 'floor' : 'ceil' ](progressInPages);
                 }
+
+                curPage = limitRange(curPage, 0, this._numPages - 1);
 
                 // If something used to calculate progressInPages was zero, we get NaN here.
                 if (!isNaN(curPage)) {
@@ -343,7 +299,8 @@ Ink.createModule('Ink.UI.Carousel', '1',
         /**
          * Gets the current page index
          * @method getPage
-         * @return The current page number
+         * @return {Number} The current page number
+         * @public
          **/
         getPage: function () {
             if (this._pagination) {
@@ -354,10 +311,22 @@ Ink.createModule('Ink.UI.Carousel', '1',
         },
 
         /**
+         * Gets the Ink Pagination element this carousel is using.
+         * @method getPagination
+         * @return {Pagination} The pagination instance, if any. Otherwise, `null`.
+         * @public
+         **/
+        getPagination: function () {
+            return this._pagination || null;
+        },
+
+        /**
          * Sets the current page index
          * @method setPage
-         * @param {Number}  page    Index of the destination page.
-         * @param {Boolean} [wrap]  Flag to activate circular counting.
+         * @param {Number}  page   Index of the destination page.
+         * @param {Boolean} [wrap=false] Flag to activate circular counting (for example, if you set the page to `5` and there are only 4 pages, you're actually going to the first page).
+         * @return {void}
+         * @public
          **/
         setPage: function (page, wrap) {
             if (wrap) {
@@ -366,6 +335,13 @@ Ink.createModule('Ink.UI.Carousel', '1',
                 if (page < 0) { page = this._numPages - page; }
             }
             page = limitRange(page, 0, this._numPages - 1);
+
+            if (page === this._currentPage) {
+                if (this._swipeData) {
+                    this._setPage(page);  // Just advance the view.
+                }
+                return;
+            }
 
             if (this._pagination) {
                 this._pagination.setCurrent(page);  // _setPage is called by pagination because it listens to its Change event.
@@ -386,21 +362,21 @@ Ink.createModule('Ink.UI.Carousel', '1',
             }
 
             this._ulEl.style[ this._isY ? 'top' : 'left'] =
-                ['-', _lengthToGo, 'px'].join('');
+                ['-', (_lengthToGo / this._ctnLength) * 100, '%'].join('');
 
             if (this._options.onChange) {
                 this._options.onChange.call(this, page);
             }
 
             this._currentPage = page;
-
-            this._updateHider();
         },
 
         /**
          * Goes to the next page
          * @method nextPage
-         * @param {Boolean} [wrap] Flag to loop from last page to first page.
+         * @param {Boolean} [wrap=false] Flag to loop from last page to first page.
+         * @return {void}
+         * @public
          **/
         nextPage: function (wrap) {
             this.setPage(this.getPage() + 1, wrap);
@@ -409,7 +385,9 @@ Ink.createModule('Ink.UI.Carousel', '1',
         /**
          * Goes to the previous page
          * @method previousPage
-         * @param {Boolean} [wrap] Flag to loop from first page to last page.
+         * @param {Boolean} [wrap=false] Flag to loop from first page to last page.
+         * @return {void}
+         * @public
          **/
         previousPage: function (wrap) { this.setPage(this.getPage() - 1, wrap); },
 
@@ -437,7 +415,7 @@ Ink.createModule('Ink.UI.Carousel', '1',
          * Get the stage element (your UL with the class ".stage").
          * @method getStageElm
          * @public
-         * @return {DOMElement} Stage element
+         * @return {Element} Stage element
          **/
         getStageElm: function() {
             return this._ulEl;
@@ -446,7 +424,7 @@ Ink.createModule('Ink.UI.Carousel', '1',
         /**
          * Get a list of your slides (elements with the ".slide" class inside your stage)
          * @method getSlidesList
-         * @return {DOMElement[]} Array containing the slides.
+         * @return {Element[]} Array containing the slides.
          * @public
          */
         getSlidesList: function() {

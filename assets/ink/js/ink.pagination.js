@@ -10,14 +10,17 @@ Ink.createModule('Ink.UI.Pagination', '1',
     'use strict';
 
     /**
-     * Function to create the pagination anchors
+     * Function to create the pagination links
      *
      * @method genAel
      * @private
-     * @param  {String} inner HTML to be placed inside the anchor.
-     * @return {DOMElement}  Anchor created
+     * @param  {String} innerHTML HTML to be placed inside the anchor.
+     * @param  {String} index The page's index, for the data-index attribute. Omit this for the "next", "prev", etc. buttons.
+     * @param  {Object} [options] Options object, containing:
+     * @param  {Boolean} [options.wrapText] Whether to wrap text in a `<span>`
+     * @return {Element} The created link element.
      */
-    var genAEl = function(inner, index, options) {
+    var genAEl = function(innerHTML, index, options) {
         var aEl = document.createElement('a');
         aEl.setAttribute('href', '#');
         if (typeof index === 'number') {
@@ -26,9 +29,9 @@ Ink.createModule('Ink.UI.Pagination', '1',
         if(options && options.wrapText) {
             var spanEl = document.createElement('span');
             aEl.appendChild(spanEl);
-            spanEl.innerHTML = inner;
+            spanEl.innerHTML = innerHTML;
         } else {
-            aEl.innerHTML = inner;
+            aEl.innerHTML = innerHTML;
         }
         return aEl;
     };
@@ -37,7 +40,7 @@ Ink.createModule('Ink.UI.Pagination', '1',
      * @class Ink.UI.Pagination
      * @constructor
      * @version 1
-     * @param {String|DOMElement}   selector                    Selector or element
+     * @param {String|Element}      selector                    Selector or element
      * @param {Object}              options                     Options
      * @param {Number}              [options.size]              Number of pages.
      * @param {Number}              [options.totalItemCount]    Total numeber of items to display
@@ -64,7 +67,8 @@ Ink.createModule('Ink.UI.Pagination', '1',
      * @param {String}              [options.previousPageClass] CSS Class used in the previous page element
      * @param {String}              [options.nextClass]         CSS Class used in the next element
      * @param {String}              [options.nextPageClass]     CSS Class used in the next page element
-     * @param {Function}            [options.numberFormatter]   Number formatter function. Receives a 0-indexed number and returns the text for the numbered page button.
+     * @param {Function}            [options.numberFormatter]   Number formatter function. Receives a 0-indexed page number, and the page count. Returns the text for the numbered page button.
+     * @param {Boolean}             [options.autoWrap=false]    Whether to navigate to first page when clicking next in last page or vice-versa.
      *
      * @sample Ink_UI_Pagination_1.html
      */
@@ -101,8 +105,11 @@ Ink.createModule('Ink.UI.Pagination', '1',
         previousPageClass: ['String', 'previousPage'],
         nextClass:         ['String', 'next'],
         nextPageClass:     ['String', 'nextPage'],
+        firstClass:        ['String', 'first'],
+        lastClass:         ['String', 'last'],
 
-        numberFormatter: ['Function', function(i) { return i + 1; }]
+        numberFormatter: ['Function', function(i) { return i + 1; }],
+        autoWrap:          ['Boolean', false]
     };
 
     Pagination.prototype = {
@@ -196,7 +203,7 @@ Ink.createModule('Ink.UI.Pagination', '1',
                 liEls = [];
                 for (i = 0, f = this._size; i < f; ++i) {
                     liEl = document.createElement(this._options.childTag);
-                    liEl.appendChild( genAEl( this._options.numberFormatter(i), i) );
+                    liEl.appendChild( genAEl( this._options.numberFormatter(i,this._size), i) );
                     // add "active" class if this is the active element.
                     Css.setClassName(liEl, this._options.activeClass, i === this._current);
                     if (this._nextEl) {
@@ -233,10 +240,10 @@ Ink.createModule('Ink.UI.Pagination', '1',
             }
 
             // update prev and next
-            if (this._prevEl) {
+            if (this._prevEl && !this._options.autoWrap) {
                 Css.setClassName(this._prevEl, this._options.disabledClass, !this.hasPrevious());
             }
-            if (this._nextEl) {
+            if (this._nextEl && !this._options.autoWrap) {
                 Css.setClassName(this._nextEl, this._options.disabledClass, !this.hasNext());
             }
         },
@@ -245,7 +252,7 @@ Ink.createModule('Ink.UI.Pagination', '1',
          * Returns the top element for the gallery DOM representation
          *
          * @method _generateMarkup
-         * @param {DOMElement} el
+         * @param {Element} el
          * @private
          */
         _generateMarkup: function(el) {
@@ -326,10 +333,14 @@ Ink.createModule('Ink.UI.Pagination', '1',
                 this.setCurrent(this._size - 1);
             }
             else if (isPrevPage || isNextPage) {
-                this.setCurrent( (isPrevPage ? -1 : 1) * this._options.maxSize, true /* relative */);
+                this.setCurrent( (isPrevPage ? -1 : 1) * this._options.maxSize,
+                    true /* relative */,
+                    !!this._options.autoWrap /* whether to wrap */);
             }
             else if (isPrev || isNext) {
-                this.setCurrent(isPrev ? -1 : 1, true /* relative */);
+                this.setCurrent(isPrev ? -1 : 1,
+                    true /* relative */,
+                    !!this._options.autoWrap /* whether to wrap */);
             }
             else {
                 var aElem = Selector.select('[data-index]', liEl)[0];
@@ -343,10 +354,12 @@ Ink.createModule('Ink.UI.Pagination', '1',
          * Allows you to subscribe to the onChange event
          *
          * @method setOnChange
-         * @param cb {Function} Callback called with `(thisPaginator, newPageNumber)`.
+         * @param {Function} onChange Callback called with `(thisPaginator, newPageNumber)`.
+         * @return {void}
+         * @public
          */
         setOnChange: function (onChange) {
-            if (onChange !== undefined && typeof onChange !== 'function') {
+            if (onChange && typeof onChange !== 'function') {
                 throw new TypeError('onChange option must be a function!');
             }
             this._options.onChange = onChange;
@@ -357,10 +370,11 @@ Ink.createModule('Ink.UI.Pagination', '1',
          **************/
 
         /**
-         * Sets the number of pages
+         * Sets the number of pages to `sz`
          *
          * @method setSize
          * @param {Number} sz number of pages
+         * @return {void}
          * @public
          */
         setSize: function(sz) {
@@ -374,11 +388,15 @@ Ink.createModule('Ink.UI.Pagination', '1',
         },
 
         /**
-         * Sets the number of pages, then call setSize().
+         * An alternative to setSize, to define the number of pages in the Paginator.
          *
-         * @param setSizeInItems
+         * If you don't know how many pages you want, but know the amount of items you have and how many of them you want on each page, use this.
+         *
+         * @method setSizeInItems
          * @param {Number} totalItems       Total number of items
          * @param {Number} itemsPerPage     Items per page
+         * @return {void}
+         * @public
          */
         setSizeInItems: function (totalItems, itemsPerPage) {
             var pageNumber = Math.ceil(totalItems / itemsPerPage);
@@ -386,14 +404,16 @@ Ink.createModule('Ink.UI.Pagination', '1',
         },
 
         /**
-         * Sets the current page.
+         * Sets the current page. First page is 0.
          *
          * @method setCurrent
          * @param {Number} nr           Sets the current page to given number.
-         * @param {Boolean} isRelative  Flag to change the position from absolute to relative.
+         * @param {Boolean} [isRelative=false] If you set this to `true`, the function will perform a relative change. (example: setCurrent(1) will move to the next page, while setCurrent(-1) will move to the previous page)
+         * @param {Boolean} [wrap=false] Set this to true to wrap to the first page when moving past the last, and to wrap to the last page when moving before the first one.
+         * @return {void}
          * @public
          */
-        setCurrent: function(nr, isRelative) {
+        setCurrent: function(nr, isRelative, wrap) {
             if (!Common.isInteger(nr)) {
                 throw new TypeError('1st argument must be an integer number!');
             }
@@ -402,12 +422,20 @@ Ink.createModule('Ink.UI.Pagination', '1',
                 nr += this._current;
             }
 
-            if (nr > this._size - 1) {
-                nr = this._size - 1;
-            }
+            if (wrap) {
+                nr %= this._size;
 
-            if (nr < 0) {
-                nr = 0;
+                if (nr < 0) {
+                    nr += this._size;
+                }
+            } else {
+                if (nr > this._size - 1) {
+                    nr = this._size - 1;
+                }
+
+                if (nr < 0) {
+                    nr = 0;
+                }
             }
 
             this._current = nr;
@@ -425,6 +453,30 @@ Ink.createModule('Ink.UI.Pagination', '1',
         },
 
         /**
+         * Navigates to next item
+         *
+         * @method next
+         * @param {Boolean} [wrap=false] Set this to true if you want to go to the first item when going after the last item.
+         * @return {void}
+         * @public
+         **/
+        next: function (wrap) {
+            this.setCurrent(1, true /*relative*/, wrap);
+        },
+
+        /**
+         * Navigates to the previous item
+         *
+         * @method previous
+         * @param {Boolean} [wrap=false] Set this to true if you want to go to the last item when going before the first item.
+         * @return {void}
+         * @public
+         **/
+        previous: function (wrap) {
+            this.setCurrent(-1, true /*relative*/, wrap);
+        },
+
+        /**
          * Gets the number of pages
          *
          * @method getSize
@@ -436,7 +488,7 @@ Ink.createModule('Ink.UI.Pagination', '1',
         },
 
         /**
-         * Gets the current page index
+         * Gets the current page index. First page is 0.
          *
          * @method getCurrent
          * @return {Number} Current page

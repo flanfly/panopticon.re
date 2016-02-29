@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<div class="position">
+	<div class="container">
+		<div class="col-md-offset-2 col-md-8">Blog / {{ page.title }}</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<h2><small>{{ page.date | date_to_long_string }}<br></small>{{ page.title }}</h2>
+			{{ page.content }}
+		</div>
+	</div>
+</div>

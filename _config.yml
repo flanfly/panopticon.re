@@ -3,3 +3,4 @@ url_doc: "//localhost:4000"
 exclude:
   - "css/bootstrap"
 lessc: "/usr/bin/lessc"
+markdown: kramdown

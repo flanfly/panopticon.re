@@ -1,184 +1,57 @@
 ---
+layout: default
+title: ""
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-   	<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="description" content="">
-		<meta name="author" content="">
-
-		<link rel="icon" type="image/x-icon" href="{{ site.url }}/favicon.ico">
-		<link rel="shortcut icon" type="image/x-icon" href="{{ site.url }}/favicon.ico">
-		<link type="image/x-icon" href="{{ site.url }}/favicon.ico">
-		<link rel="stylesheet" href="{{ site.url }}/css/site.css">
-
-    <title>Bootstrap 101 Template</title>
-  </head>
-  <body>
-		<header>
-			<div class="container">
-				<div class="row">
-					<div id="brand" class="col-md-offset-2 col-md-8">
-						<h1>Panopticon Development Blog</h1>
-						<small>Kai Michaelis / <a href="https:/twitter.com/@_cibo_">@_cibo_</a> / <a href="https://github.com/flanfly">Github</a></small>
-					</div>
-				</div>
-			</div>
-		</header>
-
-		<nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-					<a class="navbar-brand" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,50.5,57.65625" width="30" height="35" version="1.1" id="top-logo">
-						<g id="layer1" transform="translate(-331.89285,-460.67692)">
-							<path d="m 357.14285,460.67692 c -14.08394,0 -25.25,13.09006 -25.25,28.8125 0,15.72244 11.16606,28.84375 25.25,28.84375 14.08395,0 25.25,-13.12131 25.25,-28.84375 0,-15.72244 -11.16605,-28.8125 -25.25,-28.8125 z m 0,6.65625 c 8.95262,0 16.61916,7.3252 18.5,17.375 -3.83853,-4.13688 -10.91895,-9.125 -18.90625,-9.125 -7.43795,0 -14.05383,4.77565 -18,8.78125 1.98913,-9.87292 9.55577,-17.03125 18.40625,-17.03125 z m -0.40625,12.96875 c 5.08891,0 9.1875,4.12984 9.1875,9.21875 0,5.08891 -4.09859,9.21875 -9.1875,9.21875 -5.08891,0 -9.21875,-4.12984 -9.21875,-9.21875 0,-5.08891 4.12984,-9.21875 9.21875,-9.21875 z m 18.84375,14.34375 c -1.98913,9.86604 -9.58702,17 -18.4375,17 -8.42908,0 -15.70113,-6.45527 -18.09375,-15.59375 4.01832,3.80269 10.55093,7.65625 17.75,7.65625 8.06992,0 14.98944,-4.88184 18.78125,-9.0625 z" />
-						</g>
-					</svg></a>
-        </div>
-
-				<div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-    <div class="container">
-			<div class="row">
-				<div class="col-md-offset-2 col-md-8">
-					{% for post in site.posts %}
-					<article class="post">
-					<h2>{{ post.title }}</h2>
-					<p>{{post.content }}</p>
-					</article>
-					{% endfor %}
-				</div>
-			</div>
-    </div><!-- /.container -->
-  </body>
-</html>
-<!--<html>
-	<head>
-		<title>Panopticon</title>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<link rel="icon" type="image/x-icon" href="{{ site.url }}/assets/favicon.ico">
-		<link rel="shortcut icon" type="image/x-icon" href="{{ site.url }}/assets/favicon.ico">
-		<link type="image/x-icon" href="{{ site.url }}/assets/favicon.ico">
-
-		<link rel="stylesheet" href="{{ site.url }}/assets/ink/css/ink.min.css">
-		<link rel="stylesheet" href="{{ site.url }}/assets/site.css">
-		<link rel="stylesheet" href="{{ site.url }}/assets/landing.css">
-		<link rel="stylesheet" href="{{ site.url }}/assets/ink/css/font-awesome.min.css">
-		<script type="text/javascript" src="{{ site.url }}/assets/ink/js/ink-all.js"></script>
-		<script type="text/javascript" src="{{ site.url }}/assets/ink/js/autoload.js"></script>
-	</head>
-	<body>
-		<div class="landing" id="landing1">
-			<div class="ink-grid">
-				<div class="column-group">
-					<div class="all-70 push-center">
-						<div class="column-group">
-							<div class="all-20">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,50.5,57.65625" width="150" height="175" version="1.1" id="landing-logo">
-									<g id="layer1" transform="translate(-331.89285,-460.67692)">
-										<path d="m 357.14285,460.67692 c -14.08394,0 -25.25,13.09006 -25.25,28.8125 0,15.72244 11.16606,28.84375 25.25,28.84375 14.08395,0 25.25,-13.12131 25.25,-28.84375 0,-15.72244 -11.16605,-28.8125 -25.25,-28.8125 z m 0,6.65625 c 8.95262,0 16.61916,7.3252 18.5,17.375 -3.83853,-4.13688 -10.91895,-9.125 -18.90625,-9.125 -7.43795,0 -14.05383,4.77565 -18,8.78125 1.98913,-9.87292 9.55577,-17.03125 18.40625,-17.03125 z m -0.40625,12.96875 c 5.08891,0 9.1875,4.12984 9.1875,9.21875 0,5.08891 -4.09859,9.21875 -9.1875,9.21875 -5.08891,0 -9.21875,-4.12984 -9.21875,-9.21875 0,-5.08891 4.12984,-9.21875 9.21875,-9.21875 z m 18.84375,14.34375 c -1.98913,9.86604 -9.58702,17 -18.4375,17 -8.42908,0 -15.70113,-6.45527 -18.09375,-15.59375 4.01832,3.80269 10.55093,7.65625 17.75,7.65625 8.06992,0 14.98944,-4.88184 18.78125,-9.0625 z" />
-									</g>
-								</svg>
-							</div>
-							<div class="all-70 align-center">
-								<h1>PANOPTICON</h1>
-								<p>A libre, cross platform disassembler for reverse engineering.</p>
-								<a class="ink-button" href="https://github.com/das-labor/panopticon.git"><i class="fa fa-lg fa-github"></i> View on Github</a>
-							</div>
-						</div>
-					</div>
-				</div>
+<div class="position">
+	<div class="container">
+		<div class="col-md-offset-2 col-md-8">Project</div>
+	</div>
+</div>
+<div class="container landing">
+	<div class="row">
+		<div class="col-md-5">
+			<h1>Panopticon
+				<br>
+				<small>A libre, cross platform disassembler for reverse engineering</small>
+			</h1>
+		</div>
+		<div class="col-md-7">
+			<div class="pull-right">
+				<a href="{{ site.url }}/img/screen.png" class="thumbnail">
+					<img src="{{ site.url }}/img/screen.png" alt="Screenshot of Panopticon">
+				</a>
 			</div>
 		</div>
-		{% include topbar.html %}
-		<div class="landing" id="landing2">
-			<div class="ink-grid">
-				<div class="column-group">
-					<div class="all-50 push-center">
-						<p>Panopticon is a disassembler that understands the semantics of opcodes. This way it's able to help the user by discovering and displaying invariants that would have to be discovered "by hand" in traditional disassemblers. This allows an interactive search through the space of all possible program executions.</p>
-					</div>
-				</div>
-			</div>
+	</div>
+</div>
+<div class="container landing">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<p class="lead">
+				Panopticon is a disassembler that understands the semantics of opcodes. This way it's able to help the user by discovering and displaying invariants that would have to be discovered "by hand" in traditional disassemblers. This allows an interactive search through the space of all possible program executions.
+			</p>
+			<p class="lead">
+				Development is coordinated on <a href="https://github.com/das-labor/panopticon">Github</a>
+			</p>
 		</div>
-		<div class="landing" id="landing3">
-			<div class="ink-grid">
-				<div class="column-group">
-					<div class="all-80 push-center">
-						<div class="column-group gutters">
-							<div class="all-33 align-center">
-								<i class="fa fa-3x fa-desktop"></i>
-								<h2>Graphical UI</h2>
-								<p>Panopticon has a Qt 5 GUI displaying hex dumps and control flow graphs.</p>
-							</div>
-							<div class="all-33 align-center">
-								<i class="fa fa-3x fa-magic"></i>
-								<h2>Static Analysis</h2>
-								<p>Panopticon can execute disassembled code forward and backwards without a VM or debugger running.</p>
-							</div>
-							<div class="all-33 align-center">
-            		<img src="/assets/gnu.svg" style="height: 44pt; margin-top: -12px;"/>
-								<h2>Free as in Freedom</h2>
-								<p>Panopticon is Libre/Free Software and licensed under GPLv3.</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+	</div>
+</div>
+<div class="container landing">
+	<div class="row">
+		<div class="col-md-4 text-center">
+			<i class="fa fa-3x fa-desktop"></i>
+			<h2>Graphical UI</h2>
+			<p>Panopticon has a Qt 5 GUI displaying hex dumps and control flow graphs.</p>
 		</div>
-		<div class="landing" id="landing4">
-			<div class="ink-grid">
-				<div class="column-group">
-					<div class="all-70">
-						<img src="/assets/screen1.png"></img>
-					</div>
-					<div class="all-30">
-						<h2>Classic view of code and data</h2>
-						<p>Panopticon can present data as linear hex dump. Code is displayed in line with ordinary data. Jumps are marked with arrows on the left column, Each line can be commented.</p>
-					</div>
-				</div>
-			</div>
+		<div class="col-md-4 text-center">
+			<i class="fa fa-3x fa-magic"></i>
+			<h2>Static Analysis</h2>
+			<p>Panopticon can execute disassembled code without a VM or debugger running.</p>
 		</div>
-		<div class="landing" id="landing5">
-			<div class="ink-grid">
-				<div class="column-group">
-					<div class="all-70">
-						<img src="/assets/screen2.png"></img>
-					</div>
-					<div class="all-30">
-						<h2>Graph view of control flow </h2>
-						<p>The control flow graph of each function can be browsed and rearranged to aid understanding.</p>
-					</div>
-				</div>
-			</div>
+		<div class="col-md-4 text-center">
+			<img src="{{ site.url }}/img/gnu.svg" style="height: 47pt; margin-top: -12px;"/>
+			<h2>Free as in Freedom</h2>
+			<p>Panopticon is Libre/Free Software and licensed under GPLv3.</p>
 		</div>
-		<div class="landing" id="landing6">
-			<div class="ink-grid">
-				<div class="column-group">
-					<div class="all-50 push-center">
-						<a href="{{ site.url_doc }}/install.html" class="ink-button extralarge green">
-							Continue to installation instructions <i class="fa fa-arrow-circle-right fa-lg"></i>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</body>
-</html>-->
+	</div>
+</div>

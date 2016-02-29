@@ -1,8 +1,22 @@
 ---
 layout: default
-title: Blog
 ---
-{% for post in site.posts %}
-<h1>{{ post.title }}</h1>
-<p>{{post.content }}</p>
-{% endfor %}
+<div class="position">
+	<div class="container">
+			<div class="col-md-offset-2 col-md-8">Blog</div>
+	</div>
+</div>
+				<!--<small>Kai Michaelis / <a href="https:/twitter.com/@_cibo_">@_cibo_</a> / <a href="https://github.com/flanfly">Github</a></small>-->
+<div class="container">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			{% for post in site.posts %}
+				<article class="post">
+					<h2><small>{{ post.date | date_to_long_string }}<br></small><a href="{{ site.url }}/{{ post.id }}">{{ post.title }}</a></h2>
+					{{ post.excerpt }}
+					<a href="{{ site.url }}/{{ post.id }}">Read</a>
+				</article>
+			{% endfor %}
+		</div>
+	</div>
+</div>

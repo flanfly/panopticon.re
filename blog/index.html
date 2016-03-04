@@ -7,15 +7,19 @@ layout: default
 	</div>
 </div>
 <div class="container">
+	{% for post in site.posts %}
 	<div class="row">
-		<div class="col-md-offset-2 col-md-8">
-			{% for post in site.posts %}
-				<article class="post">
-					<h2><small>{{ post.date | date_to_long_string }}<br></small><a href="{{ site.url }}/{{ post.id }}">{{ post.title }}</a></h2>
+		<div class="col-md-offset-1 col-md-2 text-center">
+			<div class="day">{{ post.date | date: '%d' }}</div>
+			<div class="month-year">{{ post.date | date: '%B %Y' }}</div>
+		</div>
+		<div class="col-md-8">
+				<article class="summary">
+					<h2>{{ post.title }}</h2>
 					{{ post.excerpt }}
-					<a href="{{ site.url }}/{{ post.id }}">Read</a>
+					<a href="{{ site.url }}/{{ post.id }}" class="btn btn-default btn-sm">Read</a>
 				</article>
-			{% endfor %}
 		</div>
 	</div>
+	{% endfor %}
 </div>

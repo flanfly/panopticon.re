@@ -42,8 +42,8 @@
 }
 
 header {
-	padding-top: 60px;
-	padding-bottom: 60px;
+	padding-top: 30px;
+	padding-bottom: 30px;
 	background:  #123;
 
 	.container nav {
@@ -86,4 +86,74 @@ footer {
 
 .profile-logo {
 	margin-top: 60px;
+}
+
+article {
+	h1, h2 {
+		font-weight: 700;
+		text-transform: uppercase;
+		font-family: "Montserrat", "Helvetica", sans-serif;
+	}
+
+	h2 {
+		font-size: 3.25rem;
+		line-height: 1;
+		margin-bottom: 30px;
+	}
+
+	h1 {
+		font-size: 6.25rem;
+		text-align: center;
+		margin: auto 0;
+		padding: 150px 0 150px 0;
+
+		small {
+			font-size: 1.5rem;
+		}
+	}
+
+	font-size: 2rem;
+}
+
+h1.light {
+	color: #fff;
+
+	small {
+		color: @gray-lighter;
+	}
+}
+
+h1.dark {
+	color: #000;
+	small {
+		color: @gray-darker;
+	}
+}
+
+.summary {
+	margin-top: 120px;
+	margin-bottom: 60px;
+}
+
+.full {
+	.container {
+		padding-top: 120px;
+	}
+}
+
+.day {
+	font-family: "Montserrat", "Helvetica", sans-serif;
+	margin-top: 120px;
+	font-size: 5rem;
+	font-weight: bold;
+	line-height: 1;
+	color: @brand-primary;
+}
+
+.month-year {
+	font-family: "Montserrat", "Helvetica", sans-serif;
+	font-size: 1.3rem;
+	font-weight: normal;
+	text-transform: uppercase;
+	line-height: 1;
 }

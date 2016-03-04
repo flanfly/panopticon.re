@@ -1,16 +1,17 @@
 ---
 layout: default
 ---
-<div class="position">
+<article class="full">
+	{% if page.image %}
+	<h1 class="{{ page.tint }}" style="background: url('{{ page.image }}'); background-size: 100% auto; background-position: center center;"><small>{{ page.date | date_to_long_string }}<br></small>{{ page.title }}</h1>
+	{% else %}
+	<h1><small>{{ page.date | date_to_long_string }}<br></small>{{ page.title }}</h1>
+	{% endif %}
 	<div class="container">
-		<div class="col-md-offset-2 col-md-8">Blog / {{ page.title }}</div>
-	</div>
-</div>
-<div class="container">
-	<div class="row">
-		<div class="col-md-offset-2 col-md-8">
-			<h2><small>{{ page.date | date_to_long_string }}<br></small>{{ page.title }}</h2>
-			{{ page.content }}
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				{{ page.content }}
+			</div>
 		</div>
 	</div>
-</div>
+</article>

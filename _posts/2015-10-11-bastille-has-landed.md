@@ -2,6 +2,7 @@
 title: Bastille has landed
 author: seu
 layout: blog
+image: /img/bastille.jpg
 ---
 
 In the last 10 months we started rebuilding Panopticon in [Rust](https://rust-lang.org/). We were able to reduce the amount of code from 17k to 12k lines. Hopefully a saver language will help us preventing bugs in the future.

@@ -299,7 +299,7 @@
 
 // Medium screen / desktop
 //** Deprecated `@screen-md` as of v3.0.1
-@screen-md:                  992px;
+@screen-md:                  1024px;
 @screen-md-min:              @screen-md;
 //** Deprecated `@screen-desktop` as of v3.0.1
 @screen-desktop:             @screen-md-min;
@@ -327,7 +327,7 @@
 @grid-gutter-width:         30px;
 // Navbar collapse
 //** Point at which the navbar becomes uncollapsed.
-@grid-float-breakpoint:     @screen-sm-min;
+@grid-float-breakpoint:     @screen-md-min;
 //** Point at which the navbar begins collapsing.
 @grid-float-breakpoint-max: (@grid-float-breakpoint - 1);
 
@@ -357,7 +357,7 @@
 //##
 
 // Basics of a navbar
-@navbar-height:                    60px;
+@navbar-height:                    67px;
 @navbar-margin-bottom:             @line-height-computed;
 @navbar-border-radius:             @border-radius-base;
 @navbar-padding-horizontal:        floor((@grid-gutter-width / 2));
@@ -369,10 +369,10 @@
 @navbar-default-border:            @gray-darker;
 
 // Navbar links
-@navbar-default-link-color:                @gray;
-@navbar-default-link-hover-color:          #fff;
+@navbar-default-link-color:                @gray-dark;
+@navbar-default-link-hover-color:          #111;
 @navbar-default-link-hover-bg:             transparent;
-@navbar-default-link-active-color:         #fff;
+@navbar-default-link-active-color:         #111;
 @navbar-default-link-active-bg:            darken(@navbar-default-bg, 2%);
 @navbar-default-link-disabled-color:       #ccc;
 @navbar-default-link-disabled-bg:          transparent;

@@ -1,65 +1,12 @@
 @import "bootstrap/bootstrap.less";
 @import "bootstrap/bootswatch.less";
 
-#topbar {
-	background: #1a1a1a;
-}
-
-#top-logo {
-	fill: #c7c7c7;
-	vertical-align: middle;
-	margin-top: -.2em;
-}
-
-#small-brand {
-	font-size: 2em;
-	margin-right: 0.5em;
-	padding: .7em;
-	letter-spacing: 5px;
-}
-
-#small-brand:hover {
-	background: none;
-}
-
-.logo {
-	fill: #1f1f1f;
-}
-
-#brand {
-	color: #c7c7c7;
-	vertical-align: middle;
-	font-weight: 400;
-	font-size: 52px;
-	letter-spacing: 2px;
-}
-
-#brand small {
-	letter-spacing: 2px;
-	margin-top: 0.6em;
-	display: block;
-	font-size: 18px;
-}
-
-header {
-	padding-top: 15px;
-	padding-bottom: 15px;
-	background:  #123;
-
-a:hover, a:visited, a:link, a:active
-	{
-		text-decoration: none;
-	}
-
-
-
-	.container nav {
-		padding-top: 1em;
-		.nav {
-		font-size: 18px;
-	letter-spacing: 3px;
-	}
-}
+.navbar {
+	//padding-top: 15px;
+	//padding-bottom: 15px;
+	background:  #fff;
+	border-bottom: 1px #ccc;
+	box-shadow: 0 0 5px #ccc;
 }
 
 .position {
@@ -163,4 +110,66 @@ h1.dark {
 	font-weight: normal;
 	text-transform: uppercase;
 	line-height: 1;
+}
+
+// /me
+#profile-img {
+	background-image: url(../img/me2.jpg);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	padding-bottom: 60%;
+	width: 100vw;
+	position: relative;
+}
+
+#profile {
+	position: absolute;
+	left: 35%;
+	transform: translateY(-50%);
+	top: 46%;
+	max-width: 800px;
+	padding: 15px;
+
+	border-radius: 2px;
+	background: rgba(30,30,30,.05);
+	color: #000;
+
+	font-size: 120%;
+	line-height: 2;
+}
+
+// /me#contact
+.contacts {
+	i {
+		float: left;
+		padding-right: 15px;
+		padding-top: 10px;
+	}
+
+	.col-md-5 {
+		padding-left: 30px;
+	}
+
+	h2 {
+		padding-top: 0px !important;
+		padding-bottom: 30px;
+	}
+
+	.row {
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+
+	a {
+		font-size: 150%;
+		line-height: 2;
+		color: #000;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+
+	padding-bottom: 70px;
 }

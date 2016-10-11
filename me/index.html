@@ -2,40 +2,59 @@
 layout: default
 title: Profile
 ---
+<div id="profile-img">
+	<div id="profile">
+		<p>Hey I'm Kai Michaelis.<br>I'm in an IT-Security Masters program in Bochum, Germany and work part-time on Free Software. You can find me at the local <a href="https://das-labor.org">hackerspace</a>. My interests are program analysis, reverse engineering and <a href="https://www.nds.rub.de/media/nds/veroeffentlichungen/2013/03/25/paper_2.pdf">cryptography</a>.</p>
+	</div>
+</div>
+<div class="container contacts">
+	<div class="row">
+		<h2>Contact</h2>
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			<i class="fa fa-2x fa-twitter"></i>
+			<a href="https://twitter.com/@_cibo_">@_cibo_</a>
+		</div>
+		<div class="col-md-5">
+			<i class="fa fa-2x fa-commenting" ></i>
+			<span>
+				seu (ät) das-labor (döt) org (XMPP)
+				<code style="font-size: 14px">6BF2ED9D3F4E29BD69352E5207B5120C2A4395B4</code>
+			</span>
+		</div>
+		<div class="col-md-5">
+			<i class="fa fa-2x fa-commenting"></i>
+			<span>
+				m6tpxqgrlsucjp4o (TorChat)
+				<code style="font-size: 14px">6C9AE869028506DAEB090448E01277431EE6E08F</code>
+			</span>
+		</div>
+		</div>
+	<div class="row">
+<div class="col-md-2">
+			<i class="fa fa-2x fa-github"></i>
+			<a href="https://github.com/flanfly">flanfly</a>
+		</div>
+			<div class="col-md-5">
+			<i class="fa fa-2x fa-envelope"></i>
+			<span>
+				seu (ät) das-labor (döt) org
+				<code style="font-size: 12px">4D4D1C76F90941BE63ADD19248715F7521C90717</code>
+			</span>
+		</div>
+	</div>
+</div>
 <div class="container">
 	<div class="row">
-		<div class="col-md-offset-2 col-md-8">
-			<h1>About me</h1>
-			<p class="lad">Hey I'm Kai Michaelis, I'm in an IT-Security Masters program in Bochum, Germany and work part-time for people who use the term Cybersecurity unironically. You can find me at the local <a href="https://das-labor.org">hackerspace</a>. My interests are program analysis, reverse engineering and <a href="https://www.nds.rub.de/media/nds/veroeffentlichungen/2013/03/25/paper_2.pdf">cryptography</a>.</p>
-		</div>
-		<!--<div class="col-md-2">
-			<a href="#" class="thumbnail">
-      	<img src="..." alt="...">
-				</a>
-		</div>-->
+		<h2>Projects</h2>
 	</div>
-	<div class="row">
-		<div class="col-md-offset-2 col-md-8">
-			<h2>On the 'net</h2>
-			<ul>
-				<li>Twitter: <a href="https://twitter.com/@_cibo_">@_cibo_</a></li>
-				<li>Github: <a href="https://github.com/flanfly">flanfly</a></li>
-				<li>eMail: seu (ät) das-labor (döt) org <code>4D4D 1C76 F909 41BE 63AD D192 4871 5F75 21C9 0717</code></li>
-				<li>Jabber: seu (ät) das-labor (döt) org  <code>6BF2ED9D 3F4E29BD 69352E52 07B5120C 2A4395B4</code></li>
-				<li>TorChat: m6tpxqgrlsucjp4o <code>6C9AE869 028506DA EB090448 E0127743 1EE6E08F</code></li>
-			</ul>
-
-			<h2>What I do</h2>
-			Here is some projects I contribute to or did so in the past.
-		</div>
-	</div>
-
 	<div class="row">
 		<div class="col-md-offset-2 col-md-7">
 			<h3>Onion Project</h3>
 			<p>An operating system for inexpensive single board computers like Raspberry Pi, Banana Pi, BeagleBoard, etc. that makes hosting Tor Services easy and secure. The projects will work without any centralized infrastructure. Packages are built reproducible on different servers, operated by different people. The clients running on the single board computer will fetch packages based on a majority vote of the package hash. The project is based on <a href="https://nixos.org/">NixOS</a> with additional hardening and isolation to mitigate exploits and cut down on the attack surface.</p>
 			<ul>
-				<li><a href="https://onion-project.org/">Website</a></li>
+				<li><a href="https://onionproject.org/">Website</a></li>
 				<li><a href="https://twitter.com/@onionproj">Twitter</a></li>
 			</ul>
 		</div>
@@ -71,24 +90,6 @@ title: Profile
 		<div class="col-md-3">
 			<a href="{{ site.url }}/img/bundesposcht.png" class="thumbnail profile-logo">
       	<img src="{{ site.url }}/img/bundesposcht.png" alt="Bundesposcht Logo">
-    	</a>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-md-offset-2 col-md-7">
-			<h3>Websites</h3>
-			<p>I built static site and web applications for Das Labor from time to time.</p>
-			<ul>
-				<li><a href="http://www.das-labor.org/labortage/2015/">Labortage 2015</a></li>
-				<li><a href="http://www.das-labor.org/10jahre/">10 years anniversary</a></li>
-				<li><a href="http://das-labor.sexy/">das-labor.sexy</a></li>
-				<li><a href="https://github.com/das-labor/shop">Das Labor Shop</a></li>
-			</ul>
-		</div>
-		<div class="col-md-3">
-			<a href="{{ site.url }}/img/websites.png" class="thumbnail profile-logo">
-      	<img src="{{ site.url }}/img/websites.png" alt="Screenshot of the Labortage 2015 website">
     	</a>
 		</div>
 	</div>

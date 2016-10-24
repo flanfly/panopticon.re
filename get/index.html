@@ -27,16 +27,16 @@ layout: default
 			<h3 name="deb">Ubuntu Xenial & Debian Stretch</h3>
 			<p>Download the DEB file for <a href="https://files.panopticon.re/panopticon-master-xenial.deb">Xenial</a> or <a href="https://files.panopticon.re/panopticon-master-stretch.deb">Stretch</a> and install it using the following commands:</p>
 			<pre>sudo dpkg -i /path/to/deb/file
-	sudo apt-get install -f</pre>
+sudo apt-get install -f</pre>
 			<p>Start Panopticon by typing <code>qtpanopticon</code>.
 
 			<h3 name="gentoo">Gentoo Linux</h3>
 			<p>There is a ebuild for Panopticon maintained in the <tt>das-labor</tt> overlay we can use. We will also need the Rust toolchain in the <tt>rust</tt> overlay. First, install the overlay by typing the following into the console:</p>
 			<pre>sudo layman -a rust
-	sudo layman -a das-labor</pre>
+sudo layman -a das-labor</pre>
 			<p>Now, we can unmask the git version and compile Panopticon:</p>
-			<pre>echo "=dev-util/panopticon-9999 ~amd64" &gt;&gt; /etc/portage/package.keywords/das-labor
-	emerge panopticon</pre>
+			<pre>sudo sh -c 'echo "=dev-util/panopticon-9999 ~amd64" &gt;&gt; /etc/portage/package.keywords/das-labor'
+emerge panopticon</pre>
 			<p>Start Panopticon by typing <code>qtpanopticon</code>.
 
 			<h3 name="arch">Arch Linux</h3>

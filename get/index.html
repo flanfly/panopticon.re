@@ -14,21 +14,31 @@ layout: documentation
 	<li><a href="#windows">Windows x64</a></li>
 	<li><a href="#deb">Ubuntu Xenial</a></li>
 	<li><a href="#deb">Debian Stretch</a></li>
+	<li><a href="#rpm">Fedora 25</a></li>
 	<li><a href="#gentoo">Gentoo</a></li>
 	<li><a href="#arch">Arch Linux</a></li>
 	<li><a href="#osx">OS X Yosemite</a></li>
 </ul>
 
-<h3 name="windows">Windows x64</h3>
+<a name="windows"></a>
+<h3>Windows x64</h3>
 <p>The build is distributed as a <a href="https://files.panopticon.re/panopticon-master.zip">zip file</a>. Download and uncompress it. The Panopticon binary is called <code>qtpanopticon.exe</code>. In case you get an error message about missing CRL dlls, run <code>vcredist_x64.exe</code> to install them.</p>
 
-<h3 name="deb">Ubuntu Xenial & Debian Stretch</h3>
+<a name="deb"></a>
+<h3>Ubuntu Xenial & Debian Stretch</h3>
 <p>Download the DEB file for <a href="https://files.panopticon.re/panopticon-master-xenial.deb">Xenial</a> or <a href="https://files.panopticon.re/panopticon-master-stretch.deb">Stretch</a> and install it using the following commands:</p>
 <pre>sudo dpkg -i /path/to/deb/file
 sudo apt-get install -f</pre>
 <p>Start Panopticon by typing <code>qtpanopticon</code>.
 
-<h3 name="gentoo">Gentoo Linux</h3>
+<a name="rpm"></a>
+<h3>Fedora 25</h3>
+<p>Download the <a href="https://files.panopticon.re/panopticon-master-fedora-25.rpm">RPM file</a> and install it using the following commands:</p>
+<pre>sudo dnf install /path/to/rpm/file</pre>
+<p>Start Panopticon by typing <code>qtpanopticon</code>.
+
+<a name="gentoo"></a>
+<h3>Gentoo Linux</h3>
 <p>There is a ebuild for Panopticon maintained in the <tt>das-labor</tt> overlay we can use. We will also need the Rust toolchain in the <tt>rust</tt> overlay. First, install the overlay by typing the following into the console:</p>
 <pre>sudo layman -a rust
 sudo layman -a das-labor</pre>
@@ -37,10 +47,12 @@ sudo layman -a das-labor</pre>
 emerge panopticon</pre>
 <p>Start Panopticon by typing <code>qtpanopticon</code>.
 
-<h3 name="arch">Arch Linux</h3>
+<a name="arch"></a>
+<h3>Arch Linux</h3>
 <p>Panopticon is in the AUR. Simply download the <a href="https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=panopticon-git">PKGBUILD script</a> and type the following into the console:
 <pre>makepkg -isp /path/to/PKGBUILD</pre>
 <p>Start Panopticon by typing <code>qtpanopticon</code>.
 
-<h3 name="osx">OS X Yosemite</h3>
+<a name="osx"></a>
+<h3>OS X Yosemite</h3>
 <p>The build is distributed as a <a href="https://files.panopticon.re/panopticon-master.dmg">DMG</a>. Download the file and open it in Finder. Move the <code>Panopticon.app</code> it into the applications directory and start it. In case you get an error preventing you from opening a application from an unidentified source, press CTRL while clicking the icon, select "Open" and ignore the warning.</p>
